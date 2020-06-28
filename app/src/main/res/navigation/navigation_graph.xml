@@ -8,14 +8,19 @@
         android:id="@+id/action_showOrderInfo"
         app:destination="@id/fragmentOrderInfo" >
         <argument
-            app:nullable="true"
             android:name="orderInfo"
-            app:argType="string"/>
+            app:argType="string"
+            app:nullable="true"/>
     </action>
 
     <action
         android:id="@+id/action_showListOrders"
         app:destination="@+id/listOrdersFragment" />
+
+    <action
+        android:id="@+id/action_showOrderMessage"
+        app:destination="@+id/fragmentOrderMessage" />
+
 
     <fragment
         android:id="@+id/fragmentOrderInfo"
@@ -29,4 +34,16 @@
         android:name="br.com.dymascs.android_project.order.OrderListFragment"
         android:label="OrderList"
         tools:layout="@layout/fragment_order_list" />
+    <fragment
+        android:id="@+id/fragmentOrderMessage"
+        android:name="br.com.dymascs.android_project.persistence.OrderMessageFragment"
+        android:label="fragment_order_message"
+        tools:layout="@layout/fragment_order_message">
+        <argument
+            android:name="orderMessage"
+            app:argType="br.com.dymascs.android_project.persistence.OrderMessage" />
+    </fragment>
 </navigation>
+
+
+

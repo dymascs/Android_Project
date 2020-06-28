@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import br.com.dymascs.android_project.databinding.FragmentOrderListBinding
+import br.com.dymascs.android_project.order.OrderInfoFragmentDirections.actionShowOrderMessage
+
 
 private const val TAG = "OrderListFragment"
 
@@ -28,9 +31,9 @@ class OrderListFragment : Fragment() {
         val itemDecor = DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL)
         binding.listOrders.addItemDecoration(itemDecor);
         binding.listOrders.adapter = OrderListAdapter(OrderListAdapter.OrderClickListener {
-//                Log.i(TAG, "Order selected: ${it.orderId}")
-//                this.findNavController()
-//                    .navigate(actionShowOrderDetail(it))
+               Log.i(TAG, "Order selected: ${it.orderId}")
+                this.findNavController()
+                    .navigate(actionShowOrderMessage(it))
         })
 
         return binding.root
