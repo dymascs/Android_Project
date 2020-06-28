@@ -10,7 +10,7 @@ import com.google.firebase.firestore.ktx.toObject
 private const val TAG = "OrderRepository"
 private const val COLLECTION = "orders"
 private const val FIELD_USER_ID = "userId"
-private const val FIELD_USERNAME = "username"
+private const val FIELD_DATE = "date"
 private const val FIELD_ORDER_ID = "orderId"
 private const val FIELD_STATUS = "status"
 private const val FIELD_PRODUCT_CODE = "productCode"
@@ -40,7 +40,7 @@ object OrderRepository {
         val liveOrder = MutableLiveData<List<OrderMessage>>()
         firebaseFirestore.collection(COLLECTION)
             .whereEqualTo(FIELD_USER_ID, firebaseAuth.uid)
-            .orderBy(FIELD_ORDER_ID, Query.Direction.ASCENDING)
+            .orderBy(FIELD_DATE, Query.Direction.ASCENDING)
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 if (firebaseFirestoreException != null) {
                     Log.w(TAG, "Listen failed.", firebaseFirestoreException)
