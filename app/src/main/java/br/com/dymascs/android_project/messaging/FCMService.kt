@@ -63,7 +63,7 @@ class FCMService : FirebaseMessagingService() {
         val channelId = "1"
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_cloud_queue_black_24dp)
-            .setContentTitle("Sales Message")
+            .setContentTitle("Ta quase chegando!!")
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
         val notificationManager =

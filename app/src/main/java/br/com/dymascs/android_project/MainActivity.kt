@@ -10,9 +10,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import br.com.dymascs.android_project.order.OrderInfoFragmentDirections
+import br.com.dymascs.android_project.order.OrderListFragmentDirections
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.FirebaseApp
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
@@ -72,6 +74,15 @@ class MainActivity : AppCompatActivity() {
                     .addOnCompleteListener {
                         this.recreate()
                     }
+                true
+            }
+            R.id.nav_orders_list -> {
+                this.findNavController(R.id.nav_host_fragment)
+                    .navigate(OrderListFragmentDirections.actionShowListOrders())
+
+                val firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+                firebaseAnalytics.logEvent("list_orders", null)
+
                 true
             }
             else -> super.onOptionsItemSelected(item)
