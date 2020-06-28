@@ -10,8 +10,14 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import br.com.dymascs.android_project.MainActivity
 import br.com.dymascs.android_project.R
+import br.com.dymascs.android_project.order.Order
+import br.com.dymascs.android_project.persistence.OrderMessage
+import br.com.dymascs.android_project.persistence.OrderRepository
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.Gson
+import java.util.*
 
 private const val TAG = "FCMService"
 
@@ -24,16 +30,29 @@ class FCMService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         remoteMessage.data.isNotEmpty().let {
             Log.d(TAG, "Payload: " + remoteMessage.data)
-            if (remoteMessage.data.containsKey("order")) {
-                sendOrderNotification(remoteMessage.data.get("order")!!)
+            if (remoteMessage.data.containsKey("orderDetail")) {
+                sendOrderNotification(remoteMessage.data.get("orderDetail")!!)
             }
         }
     }
 
     private fun sendOrderNotification(orderInfo: String) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("order", orderInfo)
-        sendNotification(intent)
+        Gson().fromJson(
+            orderInfo,
+            Order::class.java
+        ).let {
+            val currentUser = FirebaseAuth.getInstance().currentUser
+
+            if (it.username == currentUser?.email) {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("order", orderInfo)
+                sendNotification(intent)
+
+                OrderRepository.saveOrder(
+                    OrderMessage(currentUser.uid, it.orderId, it.status, it.productCode, Date().time)
+                )
+            }
+        }
     }
 
     private fun sendNotification(intent: Intent) {
